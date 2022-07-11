@@ -1,62 +1,110 @@
+//PLAYER
+const createPlayer = ((playerCharacter, classes) => {
+    return {playerCharacter, classes};
+});
+
 // Game Flow
 const game = (() => {
+    let playerX = createPlayer('X', ['playerX']);
+    let playerO = createPlayer('O', ['playerO']);
+    let currentPlayer = 0;
+    const _switchPlayerTurn = () => currentPlayer ^= 1;
     const reset = () => {
         board.reset();
     };
-    return {reset};
+    const makePlay = (id) => {
+        let success = board.makePlay(getPlayer(), id);
+        if(success) {
+            gameOverTest = board.isGameOver();
+            if(gameOverTest) console.log(`${gameOverTest} wins`);
+
+            _switchPlayerTurn();
+            return getPlayer(1);
+        }
+    };
+    const getPlayer = (current=0) => currentPlayer===current ? playerX : playerO;
+    return {reset, getPlayer, makePlay};
 })();
 
-// BOARD
+////////////////
+// Board Module
 const board = (() => {
-    _xBoard = 0;
-    _oBoard = 0;
-    _position = {TopLeft: 1, TopCenter: 2, TopRight: 4, CenterLeft: 8, CenterCenter: 16, CenterRight: 32, BottomLeft: 64, BottomCenter: 128, BottomRight:256, };
-    // top-row, middle-row, bottom-row, left-col, mid-col, right-col, diag-topleft-to-bottomright, diag-bottomleft-to-topright
-    // as in: 0b000000111 = 7 in base 10
-    // therefore, if a logical and (&) against _xBoard and 7 results in 7, the win condition has been met for the x player.
-    _winConditions = [7, 56, 448, 73, 146, 292, 273, 84];
-    _drawCondition = 511;
+    let _xBoard = 0;
+    let _oBoard = 0;
+    let _winConditions = [7, 56, 448, 73, 146, 292, 273, 84];
+    let _drawCondition = 511;
+    let _gameOver = false;
 
     const _isGameOver = () => {
-        if( (_xBoard | _oBoard) === _drawCondition) return true;
-        if(_hasBoardWon(_xBoard)) return true;
-        if(_hasBoardWon(_oBoard)) return true;
+        if( (_xBoard | _oBoard) === _drawCondition) return "cat";
+        if(_hasBoardWon(_xBoard)) return "x";
+        if(_hasBoardWon(_oBoard)) return "o";
         return false;
     };
     const _hasBoardWon = (board) => {
-        for(let c of _winConditions) if(c&board===c) return true;
+        for(let c of _winConditions) if((c & board)  === c) return true;
         return false;
     };
-    const reset = () => _gameBoard = 0;
+    // This method should only be called from within game
+    // TODO: Move board into the game module(?)
+    const makePlay = (player, id) => {
+        if(_gameOver) return false;
+        if( (id & _xBoard) || (id & _oBoard) ) return false;
 
+        if(player.playerCharacter === "X") _xBoard |= id;
+        else if(player.playerCharacter === "O") _oBoard |= id;
+        else throw `Player is not an 'X' or 'O' (${player.playerCharacter})`;
+        _gameOver = _isGameOver();
+
+        return true;
+    };
+    const reset = () => {
+        _xBoard = 0;
+        _oBoard = 0;
+    };
+    const isGameOver = () => _gameOver;
+
+
+    /////////////
+    // UI Module
     const ui = (() => {
+        const square = ((id) => {
+            // vars
+            let div = document.createElement('div');
+
+            //methods
+            const _displayPlay = (player) => {
+                if(!player) return;
+                div.textContent = player.playerCharacter;
+                for(let c of player.classes) div.classList.add(c);
+            }
+            const _addClickEvent = () => {
+                div.addEventListener('mouseup', _processClickEvent.bind(this), false);
+            };
+            const _processClickEvent = (e) => {
+                _displayPlay(game.makePlay(id));
+            };
+
+            // Init
+            div.id = `${id}`;
+            div.classList.add('square');
+            _addClickEvent();
+            return {div, id};
+        });
+
         const boardElement = document.querySelector('#board');
-        const squares = [];
-        const createBoard = () => {
+        const _createBoard = () => {
             if(!boardElement) throw "Board Element is not selected.";
             for(let i=0; i<9; i++) {
-                let div = document.createElement('div');
-                div.id = `${i}`;
-                div.classList.add('square');
-                boardElement.append(div);
+                boardElement.append(square(1<<i).div);
             }
         };
 
-        createBoard();
+        _createBoard();
         return {};
-    })();
+    })(); // End UI
 
 
     reset();
-    return {reset, toString};
-})();
-
-
-//PLAYER
-const createPlayer = ((name) => {
-    
-    return {};
-});
-
-
-console.dir(board.toString());
+    return {reset, makePlay, isGameOver};
+})(); // End Board
