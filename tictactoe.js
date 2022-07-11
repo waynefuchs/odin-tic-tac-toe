@@ -65,8 +65,8 @@ const game = (() => {
     const _isGameOver = () => {
         return _gameOver;
     };
-    const _setGameOver = () => {
-        getPlayer().increaseScore();
+    const _setGameOver = (result) => {
+        if(result !== "cat") getPlayer().increaseScore();
         _gameOver = true;
         ui.setMessage(`${gameOverTest} wins!`);
     };
@@ -84,7 +84,7 @@ const game = (() => {
         let success = board.makePlay(getPlayer(), id);
         if(success) {
             gameOverTest = board.isGameOver();
-            if(gameOverTest) _setGameOver();
+            if(gameOverTest) _setGameOver(gameOverTest);
             _switchPlayerTurn();
             return getPlayer(1);
         }
