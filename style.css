@@ -1,0 +1,81 @@
+:root {
+    /* Full palette: https://flatuicolors.com/palette/us */
+    --p-gray1: #2d3436;
+    --p-gray2: #636e72;
+    --p-gray3: #b2bec3;
+    --p-gray4: #dfe6e9;
+    --p-pink1: #e84393;
+    --p-pink2: #fd79a8;
+    --p-red1: #d63031;
+    --p-red2: #ff7675;
+    --p-orange1: #e17055;
+    --p-orange2: #fab1a0;
+    --p-yellow1: #fdcb6e;
+    --p-yellow2: #ffeaa7;
+    --p-purple1: #6c5ce7;
+    --p-purple2: #a29bfe;
+    --p-blue1: #0984e3;
+    --p-blue2: #74b9ff;
+    --p-cyan1: #00cec9;
+    --p-cyan2: #81ecec;
+    --p-green1: #00b894;
+    --p-green2: #55efc4;
+
+    /* The colors from it that I'm using */
+    --c-accent1: var(--p-blue1);
+    --c-accent2: var(--p-green1);
+    --c-dark: var(--p-gray1);
+    --c-light: var(--p-gray4);
+    --c-shadow: var(--p-gray1);
+
+    --standard-gap: 15px;
+
+    font-family: Roboto, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    /* disable selection */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Old version of Firefox */
+    -ms-user-select: none; /* Internet Explorer or Edge */
+    user-select: none; /* All modern browsers */
+}
+
+body {
+    background-color: var(--c-dark);
+    color: var(--c-light);
+    display: grid;
+    grid-template-columns: 100vw;
+    justify-items: center;
+}
+
+#board {
+    background-color: var(--c-accent1);
+    width: 90vmin;
+    height: 90vmin;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.square {
+    display: inline-block;
+    background-color: var(--c-light);
+    border: 3px solid var(--c-dark);
+    font-size: 25vmin;
+    text-align: center;
+}
+.playerX {
+    /* border: 3px solid var(--c-accent1); */
+    color: var(--c-accent1);
+}
+.playerO {
+    /* border: 3px solid var(--c-accent2); */
+    color: var(--c-accent2);
+}
