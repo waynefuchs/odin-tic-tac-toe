@@ -21,14 +21,18 @@
     --p-green1: #00b894;
     --p-green2: #55efc4;
 
-    /* The colors from it that I'm using */
+    /* The colors from the above palette that I'm using */
     --c-accent1: var(--p-blue1);
     --c-accent2: var(--p-green1);
+    --c-accent3: var(--p-orange1);
     --c-dark: var(--p-gray1);
+    --c-medium: var(--p-gray3);
     --c-light: var(--p-gray4);
     --c-shadow: var(--p-gray1);
 
-    --standard-gap: 15px;
+    /* I've found that defining standard measurements is handy */
+    --gap: 15px;
+    --corner: 5px;
 
     font-family: Roboto, sans-serif;
 }
@@ -78,4 +82,62 @@ body {
 .playerO {
     /* border: 3px solid var(--c-accent2); */
     color: var(--c-accent2);
+}
+
+
+#player-status {
+    display: grid;
+    grid-template-columns: 1fr minmax(100px, 33vw) 1fr;
+    gap: 100px;
+    padding-bottom: 32px;
+}
+#x,
+#o {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-items: start;
+    padding: var(--gap);
+    gap: var(--gap);
+}
+#x>h2,
+#o>h2 {
+    grid-column: 1 / -1;
+}
+#o {
+    justify-items: end;
+}
+
+.message-selected {
+    background-color: var(--c-medium);
+    border-radius: var(--corner);
+    padding: var(--gap);
+}
+.message-selected:hover {
+    background-color: var(--c-accent3);
+}
+.x-selected {
+    background-color: var(--c-accent1);
+}
+.o-selected {
+    background-color: var(--c-accent2);
+}
+
+
+.x-selected>#x-player,
+.o-selected>#o-player {
+    color: var(--c-light);
+}
+
+#x-player {
+    color: var(--c-accent1);
+}
+#o-player {
+    color: var(--c-accent2);
+}
+
+
+#message {
+    align-self: center;
+    text-align: center;
 }
