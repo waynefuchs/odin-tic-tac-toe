@@ -61,8 +61,8 @@ body {
 
 #board {
     background-color: var(--c-accent1);
-    width: 90vmin;
-    height: 90vmin;
+    width: 80vmin;
+    height: 80vmin;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -72,7 +72,7 @@ body {
     display: inline-block;
     background-color: var(--c-light);
     border: 3px solid var(--c-dark);
-    font-size: 25vmin;
+    font-size: 20vmin;
     text-align: center;
 }
 .playerX {
@@ -86,9 +86,9 @@ body {
 
 
 #player-status {
+    width: 80vmin;
     display: grid;
     grid-template-columns: 1fr minmax(100px, 33vw) 1fr;
-    gap: 100px;
     padding-bottom: 32px;
 }
 #x,

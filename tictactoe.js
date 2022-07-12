@@ -78,6 +78,7 @@ const game = (() => {
         currentPlayer = 0;
         board.reset();
         _gameOver = board.isGameOver();
+        ui.setMessage("");
         ui.updateSelection();
     };
     const makePlay = (id) => {
